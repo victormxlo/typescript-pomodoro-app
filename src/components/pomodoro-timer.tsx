@@ -14,10 +14,12 @@ export function PomodoroTimer(props: Props): JSX.Element {
   const [mainTime, setMainTime] = React.useState(props.defaultPomodoroTime);
   const [timeCount, setTimeCount] = React.useState(false);
   const [focusMode, setFocusMode] = React.useState(false);
+  const [restMode, setRestMode] = React.useState(false);
 
   useEffect(() => {
     if (focusMode) document.body.classList.add('focus');
-  }, [focusMode]);
+    if (restMode) document.body.classList.remove('focus');
+  }, [focusMode, restMode]);
 
   useInterval(
     () => {
@@ -29,6 +31,20 @@ export function PomodoroTimer(props: Props): JSX.Element {
   const configureFocus = () => {
     setTimeCount(true);
     setFocusMode(true);
+    setRestMode(false);
+    setMainTime(props.defaultPomodoroTime);
+  };
+
+  const configureRest = (long: boolean) => {
+    setTimeCount(true);
+    setFocusMode(false);
+    setRestMode(true);
+
+    if (long) {
+      setMainTime(props.longRestTime);
+    } else {
+      setMainTime(props.shortRestTime);
+    }
   };
 
   return (
@@ -38,8 +54,9 @@ export function PomodoroTimer(props: Props): JSX.Element {
 
       <div className="controls">
         <Button text="Focus" onClick={() => configureFocus()}></Button>
-        <Button text="Button" onClick={() => console.log('...')}></Button>
+        <Button text="Rest" onClick={() => configureRest(false)}></Button>
         <Button
+          className={!focusMode && !restMode ? 'hidden' : ''}
           text={timeCount ? 'Pause' : 'Play'}
           onClick={() => setTimeCount(!timeCount)}
         ></Button>
