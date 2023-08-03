@@ -5,6 +5,9 @@ import { Timer } from './timer';
 
 interface Props {
   defaultPomodoroTime: number;
+  shortRestTime: number;
+  longRestTime: number;
+  cycles: number;
 }
 
 export function PomodoroTimer(props: Props): JSX.Element {
@@ -15,10 +18,19 @@ export function PomodoroTimer(props: Props): JSX.Element {
   }, 1000);
 
   return (
-    <div className="container">
+    <div className="pomodoro">
       <h2>Mode</h2>
       <Timer mainTime={mainTime} />
-      <Button text="Test" onClick={() => console.log('...')}></Button>
+
+      <div className="controls">
+        <Button text="Button" onClick={() => console.log('...')}></Button>
+        <Button text="Button" onClick={() => console.log('...')}></Button>
+        <Button text="Button" onClick={() => console.log('...')}></Button>
+      </div>
+
+      <div className="details">
+        <p>Details</p>
+      </div>
     </div>
   );
 }
